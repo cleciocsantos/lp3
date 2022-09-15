@@ -58,6 +58,8 @@
             echo "E-mail: ".$cliente["email"]."<br>";
             echo "Data de nascimento: ".$cliente["data_nasc"]."<br>";
             echo "Bandeira do cartão: ".$cliente["cartao"]."<br>";
+            echo "<a href='altera.php?cod_cliente=".$cliente["cod_cliente"]."'>
+            Editar cliente</a><br>";
             echo "---------------------<br>";
         }
     }
@@ -73,6 +75,45 @@
             echo "Data de nascimento: ".$cliente["data_nasc"]."<br>";
             echo "Bandeira do cartão: ".$cliente["cartao"]."<br>";
             echo "---------------------<br>";
+        }
+    }
+    else if($operacao == "editar"){
+        $cod_cliente = $_POST["cod_cliente"]; 
+        $nome = $_POST["nome"]; 
+        $email = $_POST["email"];
+        $data_nasc = $_POST["data_nasc"];
+        $bandeiraCartao = $_POST["bandeiraCartao"];
+
+        $erro = 0;
+
+        if(empty($nome) or strstr($nome, ' ') == false){
+            echo "Por favor, preencha o nome completo.<br>";
+            $erro = 1;
+        }
+
+        if(strlen($email) < 10 or strstr($email, '@') == false){
+            echo "Por favor, preencha o e-mail corretamente.<br>";
+            $erro = 1;
+        }
+
+        if(empty($data_nasc)){
+            echo "Por favor, preencha a data.<br>";
+            $erro = 1;
+        }
+
+        if(empty($bandeiraCartao)){
+            echo "Por favor, escolha uma bandeira do cartão de crédito.<br>";
+            $erro = 1;
+        }
+
+        if($erro == 0){
+            $sql = "UPDATE cliente SET nome = '$nome', email = '$email', 
+            data_nasc = '$data_nasc', cartao = '$bandeiraCartao'";
+            $sql .= "WHERE cod_cliente = $cod_cliente;";  
+            mysqli_query($mysqli,$sql);
+
+            echo "Cliente atualizado com sucesso!<br>";
+            echo "<a href='form_extra.html'>Voltar para o início</a>"; 
         }
     }
 ?>
