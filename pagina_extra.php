@@ -7,11 +7,13 @@
     <body>
         <h1>Dados Cadastrados</h1>
 <?php
-    $operacao = $_POST["operacao"];
+    $operacao = $_REQUEST["operacao"];
 
     if($operacao == "inserir"){
         $nome = $_POST["nome"]; 
         $email = $_POST["email"];
+        $senha = $_POST["senha"];
+        $senha_rep = $_POST["senha_rep"];
         $data_nasc = $_POST["data_nasc"];
         $bandeiraCartao = $_POST["bandeiraCartao"];
 
@@ -27,6 +29,25 @@
             $erro = 1;
         }
 
+        $sql = "SELECT * FROM cliente WHERE email = '$email';";
+        $res = mysqli_query($mysqli, $sql);
+
+        //testa se já existe o e-mail cadastrado
+        if(mysqli_num_rows($res) == 1){
+            echo "E-mail já cadastrado. Por favor, digite outro e-mail.<br>";
+            $erro = 1;
+        }
+
+        if(strlen($senha) < 5 or strlen($senha) > 10){
+            echo "Por favor, digite a senha entre 5 e 10 caracteres.<br>";
+            $erro = 1;
+        }
+
+        if($senha != $senha_rep){
+            echo "Por favor, repita a senha corretamente.<br>";
+            $erro = 1;
+        }
+
         if(empty($data_nasc)){
             echo "Por favor, preencha a data.<br>";
             $erro = 1;
@@ -38,8 +59,8 @@
         }
 
         if($erro == 0){
-            $sql = "INSERT INTO cliente (nome,email,data_nasc,cartao)";
-            $sql .= "VALUES ('$nome','$email','$data_nasc', '$bandeiraCartao');";  
+            $sql = "INSERT INTO cliente (nome,email,senha,data_nasc,cartao)";
+            $sql .= "VALUES ('$nome','$email','$senha','$data_nasc', '$bandeiraCartao');";  
             mysqli_query($mysqli,$sql);
 
             echo "Nome: $nome <br>";
@@ -60,6 +81,8 @@
             echo "Bandeira do cartão: ".$cliente["cartao"]."<br>";
             echo "<a href='altera.php?cod_cliente=".$cliente["cod_cliente"]."'>
             Editar cliente</a><br>";
+            echo "<a href='pagina_extra.php?operacao=excluir&cod_cliente=".$cliente["cod_cliente"]."'>
+            Excluir cliente</a><br>";
             echo "---------------------<br>";
         }
     }
@@ -115,6 +138,13 @@
             echo "Cliente atualizado com sucesso!<br>";
             echo "<a href='form_extra.html'>Voltar para o início</a>"; 
         }
+    }
+    else if($operacao == "excluir"){
+        $cod_cliente = $_GET["cod_cliente"];
+        $sql = "DELETE FROM cliente WHERE cod_cliente = $cod_cliente;"; 
+        mysqli_query($mysqli,$sql);
+        echo "Cliente excluído com sucesso!<br>";
+        echo "<a href='form_extra.html'>Voltar para o início</a>";
     }
 ?>
     </body>

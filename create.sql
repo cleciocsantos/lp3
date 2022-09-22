@@ -9,3 +9,5 @@ CREATE TABLE cliente (
     cartao varchar(30) NOT NULL, 
     primary key(cod_cliente) 
 );
+
+ALTER TABLE `cliente` ADD `senha` VARCHAR(255) NOT NULL AFTER `email`;
