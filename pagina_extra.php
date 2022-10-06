@@ -59,8 +59,9 @@
         }
 
         if($erro == 0){
+            $senha_cript = password_hash($senha, PASSWORD_DEFAULT);
             $sql = "INSERT INTO cliente (nome,email,senha,data_nasc,cartao)";
-            $sql .= "VALUES ('$nome','$email','$senha','$data_nasc', '$bandeiraCartao');";  
+            $sql .= "VALUES ('$nome','$email','$senha_cript','$data_nasc', '$bandeiraCartao');";  
             mysqli_query($mysqli,$sql);
 
             echo "Nome: $nome <br>";

@@ -16,7 +16,7 @@
     else{
         $cliente = mysqli_fetch_array($res);
         // testa se a senha está errada
-        if($senha != $cliente["senha"]){
+        if(!password_verify($senha, $cliente['senha'])){
             echo "Senha inválida!";
             echo "<p><a href='login.html'>Página de login</a></p>";
         }
@@ -24,7 +24,7 @@
             // Abre a sessão e registra as variáveis do login
             session_start();
             $_SESSION["email"] = $email;
-            $_SESSION["senha"] = $senha;
+            $_SESSION["senha"] = $cliente['senha'];
             // direciona para a página inicial
             header("Location: form_extra.php");
         }
