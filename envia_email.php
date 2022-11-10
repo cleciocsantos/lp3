@@ -4,9 +4,9 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // Inclui os arquivos da biblioteca PHPMailer necessários para o envio de e-mail
-require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/PHPMailer-master/src/Exception.php';
-require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/PHPMailer-master/src/PHPMailer.php';
-require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/PHPMailer-master/src/SMTP.php';
+require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/LP3/PHPMailer-master/src/Exception.php';
+require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/LP3/PHPMailer-master/src/PHPMailer.php';
+require 'C:/Program Files (x86)/EasyPHP-Devserver-17/eds-www/LP3/PHPMailer-master/src/SMTP.php';
 
 function envia_email($para, $assunto, $mensagem){
 
@@ -21,8 +21,9 @@ function envia_email($para, $assunto, $mensagem){
         $mail->SMTPAuth   = true;                                   //Habilita a autenticação do SMTP
         $mail->Username   = 'lp3.cp2.2022@gmail.com';               //usuário SMTP
         $mail->Password   = 'nkmgrlqececqxvii';                     //senha SMTP
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Habilita a encriptação implícita TLS
-        $mail->Port       = 465;                                    //Porta TCP de conexão; use 587 se você tiver configurado `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Habilita a encriptação implícita TLS
+        $mail->Port       = 587;                                    //Porta TCP de conexão; use 587 se você tiver configurado `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
 
         //Remetente e Destinatários
         $mail->setFrom('lp3.cp2.2021@gmail.com', 'Site do Professor');  // Adiciona o remetente
@@ -45,6 +46,7 @@ function envia_email($para, $assunto, $mensagem){
         $mail->send();                                          // tenta enviar o e-mail
         return true;                                            // retorna verdadeiro se enviar corretamente.
     } catch (Exception $e) {
+        echo "Erro: ".$e;
         return false;                                           // retorna falso se ocorrer uma falha no envio.
     }
 }
